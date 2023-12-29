@@ -13,15 +13,15 @@ typedef std::vector<plugin::IPlugin *>::iterator pluginlistiterator;
 class FakeInterface : public plugin::IInterface
 {
 public:
-    FakeInterface() : frame(0) {}
+    FakeInterface() : frame(0), name("FakeInterface") {}
     virtual ~FakeInterface() {}
     void incrementFrame()
     {
         frame++;
     }
-    virtual std::string getName()
+    virtual const std::string &getName()
     {
-        return "FakeInterface";
+        return name;
     }
     virtual ssize_t getFrame()
     {
@@ -42,6 +42,7 @@ public:
 
 protected:
     ssize_t frame;
+    std::string name;
 };
 
 int main(int argc, char *argv[])
@@ -95,7 +96,7 @@ int main(int argc, char *argv[])
 
     // Local our local plugin
     pluginlist plugins;
-    plugins.push_back(new LocalPlugin());
+    //plugins.push_back(new LocalPlugin());
     plugins.push_back(create());
     FakeInterface fakeInterface;
 

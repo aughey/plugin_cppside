@@ -7,7 +7,7 @@ namespace plugin
     class IInterface {
     public:
         virtual ~IInterface() {}
-        virtual std::string getName() = 0;
+        virtual const std::string &getName() = 0;
         virtual ssize_t getFrame() = 0;
         virtual double getPositionX() = 0;
         virtual double getPositionY() = 0;

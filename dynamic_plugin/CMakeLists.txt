@@ -4,7 +4,9 @@ project(dynamic_plugin VERSION 1.0)
 
 set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
 
-add_library(dynamic_plugin SHARED dynamic_plugin.cpp)
+file(GLOB SOURCES "*.cpp")
+
+add_library(dynamic_plugin SHARED ${SOURCES})
 # link to libplugin_rustside.a in the root of source
 target_link_libraries(dynamic_plugin ${CMAKE_SOURCE_DIR}/libplugin_rustside.a)
 
