@@ -44,10 +44,17 @@ protected:
     ssize_t frame;
 };
 
-int main()
+int main(int argc, char *argv[])
 {
+    // first arg is soPath
+    if(argc != 2)
+    {
+        std::cerr << "Usage: " << argv[0] << " <soPath>" << std::endl;
+        return 1;
+    }
+
     // Path to the shared object
-    const char *soPath = "build/dynamic_plugin/libdynamic_plugin.so";
+    const char *soPath = argv[1];
 
     // Open the shared object
     void *handle = dlopen(soPath, RTLD_LAZY);
@@ -106,4 +113,5 @@ int main()
 
     // Close the library
     dlclose(handle);
+    return 0;
 }
