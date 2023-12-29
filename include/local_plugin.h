@@ -4,8 +4,8 @@ class LocalPlugin : public plugin::IPlugin
 {
     public:
     LocalPlugin();
-    virtual ~LocalPlugin() = default;
-    virtual void initialize() override;
-    virtual void OnFrame(plugin::IInterface *) override;
-    virtual void OnExit() override;
+    virtual ~LocalPlugin() {}
+    virtual void initialize();
+    virtual void OnFrame(plugin::IInterface *);
+    virtual void OnExit();
 };

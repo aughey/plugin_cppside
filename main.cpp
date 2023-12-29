@@ -7,33 +7,35 @@
 
 typedef void (*InitializeFunc)();
 typedef plugin::IPlugin *(*CreateFunc)();
+typedef std::vector<plugin::IPlugin *> pluginlist;
+typedef std::vector<plugin::IPlugin *>::iterator pluginlistiterator;
 
 class FakeInterface : public plugin::IInterface
 {
 public:
     FakeInterface() : frame(0) {}
-    virtual ~FakeInterface() = default;
+    virtual ~FakeInterface() {}
     void incrementFrame()
     {
         frame++;
     }
-    virtual std::string getName() override
+    virtual std::string getName()
     {
         return "FakeInterface";
     }
-    virtual ssize_t getFrame() override
+    virtual ssize_t getFrame()
     {
         return frame;
     }
-    virtual double getPositionX() override
+    virtual double getPositionX()
     {
         return 3.14;
     }
-    virtual double getPositionY() override
+    virtual double getPositionY()
     {
         return 0.159;
     }
-    virtual double getPositionZ() override
+    virtual double getPositionZ()
     {
         return 0.265;
     }
@@ -85,15 +87,16 @@ int main()
     initialize();
 
     // Local our local plugin
-    std::vector<plugin::IPlugin *> plugins;
+    pluginlist plugins;
     plugins.push_back(new LocalPlugin());
     plugins.push_back(create());
     FakeInterface fakeInterface;
 
     while (true)
     {
-        for (auto plugin : plugins)
+         for (pluginlistiterator it = plugins.begin(); it != plugins.end(); it++)
         {
+            plugin::IPlugin *plugin = *it;
             plugin->OnFrame(&fakeInterface);
         }
         // sleep 1 second

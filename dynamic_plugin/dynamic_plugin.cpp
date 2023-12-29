@@ -8,19 +8,19 @@ public:
     {
         std::cout << "DynamicPlugin::DynamicPlugin()" << std::endl;
     }
-    virtual ~DynamicPlugin() = default;
-    virtual void initialize() override
+    virtual ~DynamicPlugin() {}
+    virtual void initialize()
     {
         std::cout << "DynamicPlugin::initialize()" << std::endl;
     }
-    virtual void OnFrame(plugin::IInterface *interface) override
+    virtual void OnFrame(plugin::IInterface *interface)
     {
         std::cout << "DynamicPlugin::OnFrame()" << std::endl;
         std::cout << "Name: " << interface->getName() << std::endl;
         std::cout << "Position: (" << interface->getPositionX() << ", " << interface->getPositionY() << ", " << interface->getPositionZ() << ")" << std::endl;
         std::cout << "Frame: " << interface->getFrame() << std::endl;
     }
-    virtual void OnExit() override
+    virtual void OnExit()
     {
         std::cout << "DynamicPlugin::OnExit()" << std::endl;
     }

@@ -1,11 +1,12 @@
 #pragma once
 #include <string>
+#include <sys/types.h>
 
 namespace plugin
 {
     class IInterface {
     public:
-        virtual ~IInterface() = default;
+        virtual ~IInterface() {}
         virtual std::string getName() = 0;
         virtual ssize_t getFrame() = 0;
         virtual double getPositionX() = 0;
@@ -15,7 +16,7 @@ namespace plugin
 
     class IPlugin {
     public:
-        virtual ~IPlugin() = default;
+        virtual ~IPlugin() {}
         virtual void initialize() = 0;
         virtual void OnFrame(IInterface *) = 0;
         virtual void OnExit() = 0;
