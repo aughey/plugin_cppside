@@ -47,7 +47,7 @@ protected:
 int main(int argc, char *argv[])
 {
     // first arg is soPath
-    if(argc != 2)
+    if (argc != 2)
     {
         std::cerr << "Usage: " << argv[0] << " <soPath>" << std::endl;
         return 1;
@@ -99,9 +99,16 @@ int main(int argc, char *argv[])
     plugins.push_back(create());
     FakeInterface fakeInterface;
 
+    // run initialize on all plugins
+    for (pluginlistiterator it = plugins.begin(); it != plugins.end(); it++)
+    {
+        plugin::IPlugin *plugin = *it;
+        plugin->initialize();
+    }
+
     while (true)
     {
-         for (pluginlistiterator it = plugins.begin(); it != plugins.end(); it++)
+        for (pluginlistiterator it = plugins.begin(); it != plugins.end(); it++)
         {
             plugin::IPlugin *plugin = *it;
             plugin->OnFrame(&fakeInterface);
@@ -110,6 +117,14 @@ int main(int argc, char *argv[])
         sleep(1);
         fakeInterface.incrementFrame();
     }
+
+    for (pluginlistiterator it = plugins.begin(); it != plugins.end(); it++)
+    {
+        plugin::IPlugin *plugin = *it;
+        plugin->OnExit();
+        delete plugin;
+    }
+    plugins.clear();
 
     // Close the library
     dlclose(handle);

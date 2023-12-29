@@ -1,6 +1,11 @@
 #include <iostream>
 #include "plugin.h"
 
+extern "C"
+{
+    void rust_initialize();
+}
+
 class DynamicPlugin : public plugin::IPlugin
 {
 public:
@@ -12,6 +17,7 @@ public:
     virtual void initialize()
     {
         std::cout << "DynamicPlugin::initialize()" << std::endl;
+        rust_initialize();
     }
     virtual void OnFrame(plugin::IInterface *interface)
     {
