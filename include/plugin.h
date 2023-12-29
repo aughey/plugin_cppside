@@ -7,6 +7,7 @@ namespace plugin
     public:
         virtual ~IInterface() = default;
         virtual std::string getName() = 0;
+        virtual ssize_t getFrame() = 0;
         virtual double getPositionX() = 0;
         virtual double getPositionY() = 0;
         virtual double getPositionZ() = 0;

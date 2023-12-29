@@ -13,6 +13,7 @@ void LocalPlugin::OnFrame(plugin::IInterface *interface) {
     std::cout << "LocalPlugin::OnFrame()" << std::endl;
     std::cout << "Name: " << interface->getName() << std::endl;
     std::cout << "Position: (" << interface->getPositionX() << ", " << interface->getPositionY() << ", " << interface->getPositionZ() << ")" << std::endl;
+    std::cout << "Frame: " << interface->getFrame() << std::endl;
 }
 
 void LocalPlugin::OnExit() {
