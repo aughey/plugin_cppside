@@ -3,6 +3,10 @@
 #include "c_interface.h"
 
 // define the call-in interface
+void interface_shutdown(plugin::IInterface *i)
+{
+    i->shutdown();
+}
 const char *interface_get_name(plugin::IInterface *i)
 {
     return i->getName().c_str();

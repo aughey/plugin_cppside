@@ -1,53 +1,17 @@
 #include <iostream>
-#include <dlfcn.h>
 #include <vector>
 #include "plugin.h"
 #include "local_plugin.h"
+#include "fake_interface.h"
+#include "load_shared.h"
 #include <unistd.h>
 
-typedef void (*InitializeFunc)();
-typedef plugin::IPlugin *(*CreateFunc)();
 typedef std::vector<plugin::IPlugin *> pluginlist;
 typedef std::vector<plugin::IPlugin *>::iterator pluginlistiterator;
 
-class FakeInterface : public plugin::IInterface
-{
-public:
-    FakeInterface() : frame(0), name("FakeInterface") {}
-    virtual ~FakeInterface() {}
-    void incrementFrame()
-    {
-        frame++;
-    }
-    virtual const std::string &getName()
-    {
-        return name;
-    }
-    virtual ssize_t getFrame()
-    {
-        return frame;
-    }
-    virtual double getPositionX()
-    {
-        return 3.14;
-    }
-    virtual double getPositionY()
-    {
-        return 0.159;
-    }
-    virtual double getPositionZ()
-    {
-        return 0.265;
-    }
-
-protected:
-    ssize_t frame;
-    std::string name;
-};
-
 int main(int argc, char *argv[])
 {
-    // first arg is soPath
+    // first arg is the path to the shared object to load
     if (argc != 2)
     {
         std::cerr << "Usage: " << argv[0] << " <soPath>" << std::endl;
@@ -57,47 +21,21 @@ int main(int argc, char *argv[])
     // Path to the shared object
     const char *soPath = argv[1];
 
-    // Open the shared object
-    void *handle = dlopen(soPath, RTLD_LAZY);
-    if (!handle)
+    // Load the shared object and create the plugin
+    plugin::IPlugin *plugin = shared::load_so_and_create_plugin(soPath);
+    if (!plugin)
     {
-        std::cerr << "Cannot open library: " << dlerror() << '\n';
+        std::cerr << "Failed to load plugin" << std::endl;
         return 1;
     }
 
-    // Reset errors
-    dlerror();
-
-    // Load the symbol
-    InitializeFunc initialize = (InitializeFunc)dlsym(handle, "initialize");
-    {
-        const char *dlsym_error = dlerror();
-        if (dlsym_error)
-        {
-            std::cerr << "Cannot load symbol 'initialize': " << dlsym_error << '\n';
-            dlclose(handle);
-            return 1;
-        }
-    }
-
-    CreateFunc create = (CreateFunc)dlsym(handle, "create");
-    {
-        const char *dlsym_error = dlerror();
-        if (dlsym_error)
-        {
-            std::cerr << "Cannot load symbol 'create': " << dlsym_error << '\n';
-            dlclose(handle);
-            return 1;
-        }
-    }
-
-    // Use the function initialize();
-    initialize();
-
-    // Local our local plugin
+    // Our list of plugins to run in a simplified executive
     pluginlist plugins;
-    //plugins.push_back(new LocalPlugin());
-    plugins.push_back(create());
+    plugins.push_back(plugin);
+
+    // Create a fake interface to pass to the plugins.  This defines simple
+    // methods that the plugins can call to get information about the
+    // environment.
     FakeInterface fakeInterface;
 
     // run initialize on all plugins
@@ -107,8 +45,10 @@ int main(int argc, char *argv[])
         plugin->initialize();
     }
 
-    while (true)
+    // Our main executive loop, run until the plugins tell us to shutdown
+    while (fakeInterface.inShutdown() == false)
     {
+        // For each plugin, run it's OnFrame method
         for (pluginlistiterator it = plugins.begin(); it != plugins.end(); it++)
         {
             plugin::IPlugin *plugin = *it;
@@ -116,9 +56,11 @@ int main(int argc, char *argv[])
         }
         // sleep 1 second
         sleep(1);
+        // Move to the next frame
         fakeInterface.incrementFrame();
     }
 
+    // tell all teh plugins to exist and delete them
     for (pluginlistiterator it = plugins.begin(); it != plugins.end(); it++)
     {
         plugin::IPlugin *plugin = *it;
@@ -127,7 +69,5 @@ int main(int argc, char *argv[])
     }
     plugins.clear();
 
-    // Close the library
-    dlclose(handle);
     return 0;
 }

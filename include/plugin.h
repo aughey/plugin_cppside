@@ -9,6 +9,7 @@ namespace plugin
         virtual ~IInterface() {}
         virtual const std::string &getName() = 0;
         virtual ssize_t getFrame() = 0;
+        virtual void shutdown() = 0;
         virtual double getPositionX() = 0;
         virtual double getPositionY() = 0;
         virtual double getPositionZ() = 0;
