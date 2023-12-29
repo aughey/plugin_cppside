@@ -1,5 +1,9 @@
 #include <iostream>
 #include <dlfcn.h>
+#include <vector>
+#include "plugin.h"
+#include "local_plugin.h"
+#include <unistd.h>
 
 typedef void (*InitializeFunc)();
 
@@ -28,6 +32,18 @@ int main() {
 
     // Use the function
     initialize();
+
+    // Local our local plugin
+    std::vector<plugin::IPlugin*> plugins;
+    plugins.push_back(new LocalPlugin());
+
+    while(true) {
+        for (auto plugin : plugins) {
+            plugin->OnFrame(nullptr);
+        }
+        // sleep 1 second
+        sleep(1);
+    }
 
     // Close the library
     dlclose(handle);
