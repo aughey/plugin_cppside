@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 
 project(dynamic_plugin VERSION 1.0)
 
-set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
+# set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
 
 file(GLOB SOURCES "*.cpp")
 
