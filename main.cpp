@@ -9,6 +9,12 @@
 typedef std::vector<plugin::IPlugin *> pluginlist;
 typedef std::vector<plugin::IPlugin *>::iterator pluginlistiterator;
 
+// # Program tasks:
+//
+// - Load the shared object
+// - Instantiate the plugin from that object
+// - Run a loop, calling each plugin to simulate an executive
+
 int main(int argc, char *argv[])
 {
     // first arg is the path to the shared object to load
