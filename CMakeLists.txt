@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.14) # Ensure a compatible version
-project(your_project_name VERSION 1.0 LANGUAGES CXX)
+project(sim_prototype_name VERSION 1.0 LANGUAGES CXX)
 
 # Option to compile c++ 20
 # Specify the C++ standard
@@ -18,10 +18,10 @@ add_compile_options(-Wall -Wextra -Werror)
 # endif()
 
 # Add the executable
-add_executable(your_project main.cpp)
-# add your_project_lib to the executable
-target_link_libraries(your_project PRIVATE your_project_lib)
-target_link_libraries(your_project PRIVATE dl)
+add_executable(sim_prototype main.cpp)
+# add sim_prototype_lib to the executable
+target_link_libraries(sim_prototype PRIVATE sim_prototype_lib)
+target_link_libraries(sim_prototype PRIVATE dl)
 
 # Include directories
 include_directories(include)

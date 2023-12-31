@@ -4,7 +4,14 @@
 	"name": "C++",
 	"build": {
 		"dockerfile": "Dockerfile"
-	}
+	},
+	"mounts": [
+		{
+			"type": "volume",
+			"source": "plugin_rustside-79f163945866b71c71ac9677fbadba8d1f854a24b0b58724b777c7b10d35bfcc",
+			"target": "/rustworkspace"
+		}
+    ]
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},

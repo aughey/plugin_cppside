@@ -54,8 +54,6 @@ int main(int argc, char *argv[])
             plugin::IPlugin *plugin = *it;
             plugin->OnFrame(&fakeInterface);
         }
-        // sleep 1 second
-        sleep(1);
         // Move to the next frame
         fakeInterface.incrementFrame();
     }

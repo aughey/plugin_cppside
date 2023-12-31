@@ -8,7 +8,8 @@ file(GLOB SOURCES "*.cpp")
 
 add_library(dynamic_plugin SHARED ${SOURCES})
 # link to libplugin_rustside.a in the root of source
-target_link_libraries(dynamic_plugin ${CMAKE_SOURCE_DIR}/libplugin_rustside.a)
+#target_link_libraries(dynamic_plugin ${CMAKE_SOURCE_DIR}/libplugin_rustside.a)
+target_link_libraries(dynamic_plugin /rustworkspace/plugin_rustside/target/release/libplugin_rustside.a)
 
 # link to pthread
 target_link_libraries(dynamic_plugin pthread)
