@@ -17,7 +17,7 @@ namespace shared
         if (!handle)
         {
             std::cerr << "Cannot open library: " << dlerror() << '\n';
-            return nullptr;
+            return 0;
         }
 
         // Reset errors
@@ -31,7 +31,7 @@ namespace shared
             {
                 std::cerr << "Cannot load symbol 'initialize': " << dlsym_error << '\n';
                 dlclose(handle);
-                return nullptr;
+                return 0;
             }
         }
 
@@ -42,7 +42,7 @@ namespace shared
             {
                 std::cerr << "Cannot load symbol 'create': " << dlsym_error << '\n';
                 dlclose(handle);
-                return nullptr;
+                return 0;
             }
         }
 

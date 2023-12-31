@@ -4,5 +4,7 @@ wget https://github.com/Kitware/CMake/releases/download/v3.28.1/cmake-3.28.1.tar
 tar -xvf cmake-3.28.1.tar.gz
 cd cmake-3.28.1
 ./configure
-make
+make -j `nproc`
 make install
+cd /tmp
+rm -rf cmake-3.28.1.tar.gz cmake-3.28.1
